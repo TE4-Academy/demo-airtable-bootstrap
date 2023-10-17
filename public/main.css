@@ -1,0 +1,9 @@
+/* Grundläggande stil för body elementet */
+body {
+    font-family: Arial, sans-serif; /* Typsnitt */
+    background-color: #f0f0f0; /* Bakgrundsfärg */
+    color: #333; /* Textfärg */
+    margin: 0; /* Tar bort standardmarginalen */
+    padding: 0; /* Tar bort standardpadding */
+    line-height: 1.6; /* Linjeavstånd */
+}
