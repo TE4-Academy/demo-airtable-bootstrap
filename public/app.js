@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Din kod här kommer att köra efter att DOM har laddats
-    //console.log('DOM fully loaded and parsed');
     
     const app = document.getElementById('app');
     app.innerHTML = '';
@@ -25,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 const loadData = () => {
-    fetch('/data')
+    fetch('/contacts')
         .then(response => response.json())
         .then(data => {
             localStorage.setItem('contacts', JSON.stringify(data));
@@ -39,7 +37,7 @@ const populateData = (data) => {
     const ul = document.createElement('ul');
     data.forEach(contact => {
         const li = document.createElement('li');
-        li.innerText = contact.name;
+        li.innerText = `${contact.name} (${contact.email})`;
         ul.appendChild(li);
     })
     datalist.appendChild(ul);
@@ -47,9 +45,22 @@ const populateData = (data) => {
 
 const addContact = () => {
     let name = prompt('Ange namn');
-    //let email = prompt('Ange epost');
+    let email = prompt('Ange epost');
     let contacts = JSON.parse(localStorage.getItem('contacts'));
-    contacts.push({name});
+    let newContact = {name: name, email: email};
+    contacts.push(newContact);
     localStorage.setItem('contacts', JSON.stringify(contacts));
     populateData(contacts);
+    updateData(newContact);
 };
+
+const updateData = (data) => {
+    console.log(data);
+    console.log(JSON.stringify(data));
+    fetch('/contacts', {
+        method: 'POST', 
+        headers: {
+        'Content-Type': 'application/json'},
+        body: JSON.stringify(data)});
+}
+
