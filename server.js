@@ -50,6 +50,25 @@ app.post('/contacts', (req,res)=>{
       });
 });
 
+app.delete('/contacts/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log('Asked to deleted: ' + id);
+
+    try {
+        await base('contacts').destroy(id, (err, deletedRecord) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send('Server Error');
+                return;
+            }
+            console.log('Airtable confirmed deletion of: ' + deletedRecord.id);
+            res.json({ deletedRecordId: deletedRecord.id });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
 
 app.listen(4242, () => {
     console.log('Server up and running on 4242');
